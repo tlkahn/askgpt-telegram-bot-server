@@ -1,15 +1,10 @@
 import logging
 import os
 
+import requests
 from dotenv import load_dotenv
 from telegram import Update
-from telegram.ext import (
-    ApplicationBuilder,
-    CommandHandler,
-    ContextTypes,
-    MessageHandler,
-    filters,
-)
+from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
 
 load_dotenv()
 
@@ -17,15 +12,20 @@ logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
 )
 
+ASKGPT_SERVER = "http://localhost:8888"
+
 
 async def ask(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if update.effective_chat:
         if incoming_msg := update.effective_message:
             query = incoming_msg.text
-
-            await incoming_msg.reply_text(
-                f"Hi! you just said {incoming_msg.text}. Awesome!!"
-            )
+            print(f"Query: {query}")
+            headers = {"Content-Type": "application/json"}
+            response = requests.post(
+                f"{ASKGPT_SERVER}/qa", json={"q": query}, headers=headers
+            ).json()
+            print(f"Response: {response}")
+            await incoming_msg.reply_text(response["ChatGPT"])
 
 
 def main():
