@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "askgpt-telegram-bot-server"
+version = "0.1.0"
+description = ""
+authors = ["tlkahn <joshgy@gmail.com>"]
+readme = "README.md"
+packages = [{include = "askgpt_telegram_bot_server"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+python-telegram-bot = {extras = ["all"], version = "^20.3"}
+python-dotenv = "^1.0.0"
+requests = "^2.30.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+start = "askgpt_telegram_bot_server.askgpt_telegram_bot_server:main"
